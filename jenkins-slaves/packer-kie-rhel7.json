@@ -4,7 +4,8 @@
     "openstack_username": null,
     "openstack_password": null,
     "image_name": null,
-    "ssh_private_key_file": null
+    "ssh_private_key_file": null,
+    "ssh_keypair_name": null
   },
   "builders": [
     {
@@ -12,17 +13,18 @@
       "identity_endpoint": "{{ user `openstack_endpoint` }}",
       "username": "{{ user `openstack_username` }}",
       "password": "{{ user `openstack_password` }}",
-      "tenant_name": "kie-jenkins",
-      "source_image": "d7b7b9b8-751b-4b28-9bc7-3436db1fd3a8",
+      "tenant_name": "rhba-jenkins",
+      "source_image": "635d9fb8-91ad-480b-9dad-148f19696b53",
       "image_name": "{{ user `image_name` }}",
-      "flavor": "m1.medium",
-      "floating_ip_pool": "10.8.240.0",
+      "flavor": "m1.large",
+      "floating_ip_pool": "",
+      "networks": [ "6a32627e-d98d-40d8-9324-5da7cf1452fc" ],
       "insecure": "true",
       "ssh_username": "root",
-      "ssh_keypair_name": "jenkins-slave",
+      "ssh_keypair_name": "{{ user `ssh_keypair_name` }}",
       "ssh_private_key_file": "{{ user `ssh_private_key_file` }}",
       "user_data_file": "cloud-init-linux",
-      "domain_name": "Default"
+      "domain_name": "redhat.com"
     }
   ],
   "provisioners": [
