@@ -2,6 +2,7 @@
  * Creates downstream pullrequest (PR) jobs for appformer (formerly known as uberfire) and kiegroup GitHub org. units.
  * These jobs execute the full downstream build for a specific PR to make sure the changes do not break the downstream repos.
  */
+
 import org.kie.jenkins.jobdsl.Constants
 
 def final DEFAULTS = [
@@ -10,7 +11,7 @@ def final DEFAULTS = [
         timeoutMins            : 600,
         label                  : "kie-rhel7 && kie-mem24g",
         ghAuthTokenId          : "kie-ci3-token",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true clean install",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
         downstreamMvnGoals     : "-B -e -nsu -fae -Pbusiness-central,wildfly,sourcemaps,no-showcase clean install",
         downstreamMvnProps     : [
                 "full"                               : "true",
@@ -20,7 +21,8 @@ def final DEFAULTS = [
                 "maven.test.failure.ignore"          : "true",
                 "maven.test.redirectTestOutputToFile": "true",
                 "gwt.compiler.localWorkers"          : 1,
-                "webdriver.firefox.bin"              : "/opt/tools/firefox-60esr/firefox-bin"
+                "webdriver.firefox.bin"              : "/opt/tools/firefox-60esr/firefox-bin",
+                "${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL
 
         ],
         artifactsToArchive     : [
@@ -164,7 +166,7 @@ for (repoConfig in REPO_CONFIGS) {
                 project / 'builders' << 'hudson.tasks.Maven' {
                     mavenName("kie-maven-${Constants.MAVEN_VERSION}")
                     jvmOptions("-Xms1g -Xmx3g -XX:+CMSClassUnloadingEnabled")
-                    targets("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests")
+                    targets("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests ${Constants.NPM_REGISTRY_OPTION}")
                 }
                 project / 'builders' << 'org.kie.jenkinsci.plugins.kieprbuildshelper.DownstreamReposBuilder' {
                     mavenBuildConfig {

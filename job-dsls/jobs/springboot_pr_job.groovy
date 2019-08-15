@@ -10,7 +10,7 @@ def final CONFIG = [
         timeoutMins            : 120,
         ghAuthTokenId          : "kie-ci2-token",
         label                  : "kie-rhel7 && kie-mem8g",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dfindbugs.skip=true -Drevapi.skip=true clean install",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dfindbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
         mvnGoals               : "-B -e -nsu -fae clean install -Pspringboot",
         ITTestsParent          : "kie-server-parent/kie-server-tests",
         skippedITTestsModules  : ["kie-server-integ-tests-case-id-generator",
@@ -27,7 +27,9 @@ def final CONFIG = [
                 "container"                : "springboot",
                 "container.profile"        : "springboot",
                 "integration-tests"        : "true",
-                "maven.test.failure.ignore": "true"],
+                "maven.test.failure.ignore": "true",
+                "${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL
+        ],
         ircNotificationChannels: [],
         artifactsToArchive     : [
                 "**/target/*.log",
@@ -135,7 +137,7 @@ job(jobName) {
         maven {
             mavenInstallation("kie-maven-${Constants.MAVEN_VERSION}")
             mavenOpts("-Xms1g -Xmx3g -XX:+CMSClassUnloadingEnabled")
-            goals("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests") // Goals taken from
+            goals("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests ${Constants.NPM_REGISTRY_OPTION}") // Goals taken from
         }
 
         // Integration tests invocation

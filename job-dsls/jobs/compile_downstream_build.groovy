@@ -12,8 +12,8 @@ def final DEFAULTS = [
         timeoutMins            : 600,
         label                  : "kie-rhel7 && kie-mem16g",
         ghAuthTokenId          : "kie-ci4-token",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true clean install",
-        downstreamMvnGoals     : "-B -e -nsu -fae -T1C clean install -Dfull=true -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
+        downstreamMvnGoals     : "-B -e -nsu -fae -T1C clean install -Dfull=true -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true ${Constants.NPM_REGISTRY_OPTION}",
         artifactsToArchive     : [
                 "**/target/*.log",
                 "**/target/testStatusListener*",
@@ -156,7 +156,7 @@ for (repoConfig in REPO_CONFIGS) {
                 project / 'builders' << 'hudson.tasks.Maven' {
                     mavenName("kie-maven-${Constants.MAVEN_VERSION}")
                     jvmOptions("-Xms1g -Xmx3g -XX:+CMSClassUnloadingEnabled")
-                    targets("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests")
+                    targets("-e -fae -nsu -B -T1C clean install -Dfull -DskipTests ${Constants.NPM_REGISTRY_OPTION}")
                 }
                 project / 'builders' << 'org.kie.jenkinsci.plugins.kieprbuildshelper.DownstreamReposBuilder' {
                     mavenBuildConfig {

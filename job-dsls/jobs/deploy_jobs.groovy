@@ -8,13 +8,14 @@ def final DEFAULTS = [
         branch                 : Constants.BRANCH,
         timeoutMins            : 90,
         label                  : "kie-rhel7 && kie-mem8g",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true clean install",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
         mvnGoals               : "-e -nsu -fae -B -Pwildfly clean deploy com.github.spotbugs:spotbugs-maven-plugin:spotbugs",
         mvnProps: [
                 "full"                     : "true",
                 "container"                : "wildfly",
                 "integration-tests"        : "true",
-                "maven.test.failure.ignore": "true"
+                "maven.test.failure.ignore": "true",
+                "${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL
         ],
         ircNotificationChannels: [],
         artifactsToArchive     : [

@@ -553,6 +553,7 @@ matrixJob("${folderPath}/wbSmokeTestsMatrix-kieReleases-${kieMainBranch}") {
             properties("container.startstop.timeout.millis":"240000")
             properties("webdriver.firefox.bin":"/opt/tools/firefox-60esr/firefox-bin")
             properties("eap7.download.url":EAP7_DOWNLOAD_URL)
+            properties("${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL)
             mavenOpts("-Xms1024m -Xmx1536m")
             providedSettings("1461de41-7511-4269-ae02-8eeb01fd059d")
         }

@@ -10,14 +10,16 @@ def final DEFAULTS = [
         timeoutMins            : 90,
         ghAuthTokenId          : "kie-ci2-token",
         label                  : "kie-rhel7 && kie-mem8g",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true clean install",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
         mvnGoals               : "-B -e -nsu -fae -Pwildfly -Prun-code-coverage clean install",
         mvnProps               : [
                 "full"                     : "true",
                 "container"                : "wildfly",
                 "container.profile"        : "wildfly",
                 "integration-tests"        : "true",
-                "maven.test.failure.ignore": "true"],
+                "maven.test.failure.ignore": "true",
+                "${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL
+        ],
         ircNotificationChannels: [],
         artifactsToArchive     : [
                 "**/target/*.log",
@@ -115,7 +117,7 @@ for (repoConfig in REPO_CONFIGS) {
             maven {
                 mavenInstallation("kie-maven-${Constants.MAVEN_VERSION}")
                 mavenOpts("-Xms1g -Xmx3g -XX:+CMSClassUnloadingEnabled")
-                goals("-B -e -nsu -fae generate-resources -Psonarcloud-analysis")
+                goals("-B -e -nsu -fae generate-resources -Psonarcloud-analysis ${Constants.NPM_REGISTRY_OPTION}")
             }
         }
 

@@ -30,4 +30,7 @@ class Constants {
     static final String UBERFIRE_PREFIX = "2.23.0"
     static final String NUMBER_OF_KIE_USERS = "10"
     static final String SONARCLOUD_FOLDER = "sonarcloud"
+    static final String NPM_REGISTRY_URL = System.getenv("NPM_REGISTRY_URL")
+    static final String NPM_REGISTRY_PROP_NAME = "npmRegistryURL"
+    static final String NPM_REGISTRY_OPTION = "-D${NPM_REGISTRY_PROP_NAME}=${NPM_REGISTRY_URL}"
 }

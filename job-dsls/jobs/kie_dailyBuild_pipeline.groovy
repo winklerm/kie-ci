@@ -187,6 +187,7 @@ EOT
 # we will deploy into remote staging repo only once the whole build passed (to save time and bandwith)
 ./droolsjbpm-build-bootstrap/script/mvn-all.sh -B -e -U clean deploy -Dfull -Drelease -DaltDeploymentRepository=local::default::file://$deployDir -s $SETTINGS_XML_FILE\\
  -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true\\
+ ''' + Constants.NPM_REGISTRY_OPTION + '''\\
  -Dgwt.memory.settings="-Xmx10g" --clean-up-script="$WORKSPACE/clean-up.sh"
 
 # unpack zip to QA Nexus
@@ -355,6 +356,7 @@ EOT
 # do a full build
 ./droolsjbpm-build-bootstrap/script/mvn-all.sh -B -e -U clean install -Dfull -Drelease -Dproductized -s $SETTINGS_XML_FILE\\
  -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true\\
+ ''' + Constants.NPM_REGISTRY_OPTION + '''\\
  -Dgwt.memory.settings="-Xmx10g" --clean-up-script="$WORKSPACE/clean-up.sh"
  
 # creates a tarball with all repositories and saves it on Jenkins master
@@ -675,6 +677,7 @@ matrixJob("${folderPath}/kieWbTestsMatrix-kieAllBuild-${kieMainBranch}") {
             properties("deployment.timeout.millis":"240000")
             properties("container.startstop.timeout.millis":"240000")
             properties("webdriver.firefox.bin":"/opt/tools/firefox-60esr/firefox-bin")
+            properties("${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL)
             mavenOpts("-Xms1024m -Xmx1536m")
             providedSettings("771ff52a-a8b4-40e6-9b22-d54c7314aa1e")
         }
@@ -757,6 +760,7 @@ matrixJob("${folderPath}/kieServerMatrix-kieAllBuild-${kieMainBranch}") {
             properties("deployment.timeout.millis":"240000")
             properties("container.startstop.timeout.millis":"240000")
             properties("eap7.download.url":EAP7_DOWNLOAD_URL)
+            properties("${Constants.NPM_REGISTRY_PROP_NAME}": Constants.NPM_REGISTRY_URL)
             mavenOpts("-Xms1024m -Xmx1536m")
             providedSettings("771ff52a-a8b4-40e6-9b22-d54c7314aa1e")
         }
@@ -777,9 +781,9 @@ for %%x in (%repo_list%) do (
 )
 for %%x in (%repo_list%) do (
     if "%%x" == "kie-wb-common" (
-        c:\\tools\\apache-maven-3.2.5\\bin\\mvn.bat -U -e -B -f k\\pom.xml clean install -Dfull -Dmaven.test.failure.ignore=true -Dgwt.memory.settings="-Xmx2g -Xms1g -XX:MaxPermSize=256m -Xss1M" -Dgwt.compiler.localWorkers=1 || exit \\b
+        c:\\tools\\apache-maven-3.2.5\\bin\\mvn.bat -U -e -B -f k\\pom.xml clean install -Dfull -Dmaven.test.failure.ignore=true -Dgwt.memory.settings="-Xmx2g -Xms1g -XX:MaxPermSize=256m -Xss1M" -Dgwt.compiler.localWorkers=1 ''' + Constants.NPM_REGISTRY_OPTION + ''' || exit \\b
     ) else (
-        c:\\tools\\apache-maven-3.2.5\\bin\\mvn.bat -U -e -B -f %%x\\pom.xml clean install -Dfull -Dmaven.test.failure.ignore=true -Dgwt.memory.settings="-Xmx2g -Xms1g -XX:MaxPermSize=256m -Xss1M" -Dgwt.compiler.localWorkers=1 -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true || exit \\b
+        c:\\tools\\apache-maven-3.2.5\\bin\\mvn.bat -U -e -B -f %%x\\pom.xml clean install -Dfull -Dmaven.test.failure.ignore=true -Dgwt.memory.settings="-Xmx2g -Xms1g -XX:MaxPermSize=256m -Xss1M" -Dgwt.compiler.localWorkers=1 -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true ''' + Constants.NPM_REGISTRY_OPTION + '''\\\\ || exit \\b
     )
 )'''
 

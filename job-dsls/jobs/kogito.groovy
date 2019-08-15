@@ -98,7 +98,7 @@ fi
 git clone https://github.com/$ghOrgUnit/kogito-bom.git -b $mainBranch --depth 50
 # build the project
 cd kogito-bom
-mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE '''
+mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE ''' + Constants.NPM_REGISTRY_OPTION
 
 
 job("${folderPath}/kogito-bom-${mainBranch}") {
@@ -170,7 +170,7 @@ fi
 git clone https://github.com/$ghOrgUnit/kogito-runtimes.git -b $mainBranch --depth 50
 # build the project
 cd kogito-runtimes
-mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true'''
+mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true ''' + Constants.NPM_REGISTRY_OPTION
 
 
 job("${folderPath}/kogito-runtimes-${mainBranch}") {
@@ -242,7 +242,7 @@ fi
 git clone https://github.com/$ghOrgUnit/kogito-cloud.git -b $mainBranch --depth 50
 # build the project
 cd kogito-cloud
-mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true'''
+mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE -Dmaven.test.redirectTestOutputToFile=true -Dmaven.test.failure.ignore=true ''' + Constants.NPM_REGISTRY_OPTION
 
 
 job("${folderPath}/kogito-cloud-${mainBranch}") {
@@ -314,7 +314,7 @@ fi
 git clone https://github.com/$ghOrgUnit/kogito-examples.git -b $mainBranch --depth 50
 # build the project
 cd kogito-examples
-mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE '''
+mvn -U -B -e clean deploy -s $SETTINGS_XML_FILE -Dkie.maven.settings.custom=$SETTINGS_XML_FILE ''' + Constants.NPM_REGISTRY_OPTION
 
 
 job("${folderPath}/kogito-examples-${mainBranch}") {

@@ -8,7 +8,7 @@ def final DEFAULTS = [
         branch                 : Constants.BRANCH,
         timeoutMins            : 90,
         label                  : "kie-linux && kie-mem16g",
-        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true clean install",
+        upstreamMvnArgs        : "-B -e -T1C -DskipTests -Dgwt.compiler.skip=true -Dgwt.skipCompilation=true -Denforcer.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true ${Constants.NPM_REGISTRY_OPTION} clean install",
         mvnGoals               : "-e -B -T1C -fae -Dfull -DrunTurtleTests clean install",
         javadk                 : Constants.JDK_VERSION,
         trigga                 : "H 22 * * *",
