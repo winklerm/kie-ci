@@ -85,14 +85,6 @@
   with_items:
     - "{{ jdk_download_urls }}"
 
-- name: Create JDK dirs to extract the archives into (because of permissions)
-  file:
-    path: /opt/tools/{{ item }}
-    state: directory
-    mode: 0777
-  with_items:
-    - "{{ jdk_long_versions }}"
-    -
 - name: Extract JDK archives
   unarchive:
     src: /tmp/downloads/jdk-{{ item }}-linux-x64.tar.gz
@@ -103,6 +95,14 @@
     mode: 0777
   with_items:
    - "{{ jdk_short_versions }}"
+
+- name: Set permissions on JDK dirs
+  file:
+    path: /opt/tools/{{ item }}
+    state: directory
+    mode: 0777
+  with_items:
+    - "{{ jdk_long_versions }}"
 
 - name: Create JDK symlinks
   file:
@@ -125,16 +125,16 @@
   with_items:
    - "{{ maven_versions }}"
 
-- name: Create Maven dirs to extract the archives into (because of permissions)
+- name: Extract Maven archives
+  unarchive: copy=no src=/tmp/downloads/apache-maven-{{ item }}-bin.tar.gz dest=/opt/tools owner=root group=root
+  with_items:
+    - "{{ maven_versions }}"
+
+- name: Set permissions on Maven dirs
   file:
     path: /opt/tools/apache-maven-{{ item }}
     state: directory
     mode: 0777
-  with_items:
-    - "{{ maven_versions }}"
-
-- name: Extract Maven archives
-  unarchive: copy=no src=/tmp/downloads/apache-maven-{{ item }}-bin.tar.gz dest=/opt/tools owner=root group=root
   with_items:
     - "{{ maven_versions }}"
 
@@ -151,7 +151,7 @@
     dest: /opt/packer/bin/
     validate_certs: no
 
-- name: Set packer permissions
+- name: Set Packer permissions
   file:
     path: /opt/packer/bin/packer
     mode: 0755
