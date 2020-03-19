@@ -92,7 +92,6 @@
     copy: no
     owner: root
     group: root
-    mode: 0777
   with_items:
    - "{{ jdk_short_versions }}"
 
@@ -101,19 +100,11 @@
     src: /opt/tools/{{ item.0 }}
     dest: /opt/tools/{{ item.1 }}
     state: link
+    follow: no
     mode: 0644
   with_together:
   - "{{ jdk_long_versions }}"
   - "{{ jdk_symlink_names }}"
-
-- name: Set permissions on JDK dirs
-  file:
-    path: /opt/tools/{{ item }}
-    owner: root
-    group: root
-    mode: 0777
-  with_items:
-    - "{{ jdk_long_versions }}"
 
 ### Maven ###
 
@@ -133,16 +124,6 @@
     dest: /opt/tools
     owner: root
     group: root
-    mode: 0777
-  with_items:
-    - "{{ maven_versions }}"
-
-- name: Set permissions on Maven dirs
-  file:
-    path: /opt/tools/apache-maven-{{ item }}
-    owner: root
-    group: root
-    mode: 0777
   with_items:
     - "{{ maven_versions }}"
 
