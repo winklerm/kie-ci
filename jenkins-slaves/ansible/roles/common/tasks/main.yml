@@ -89,6 +89,7 @@
   file:
     path: /opt/tools/{{ item }}
     state: directory
+    mode: 0777
   with_items:
     - "{{ jdk_long_versions }}"
     -
@@ -128,6 +129,7 @@
   file:
     path: /opt/tools/apache-maven-{{ item }}
     state: directory
+    mode: 0777
   with_items:
     - "{{ maven_versions }}"
 
