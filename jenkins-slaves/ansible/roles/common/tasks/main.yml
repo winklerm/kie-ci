@@ -127,7 +127,13 @@
    - "{{ maven_versions }}"
 
 - name: Extract Maven archives
-  unarchive: copy=no src=/tmp/downloads/apache-maven-{{ item }}-bin.tar.gz dest=/opt/tools owner=root group=root
+  unarchive:
+    copy: no
+    src: /tmp/downloads/apache-maven-{{ item }}-bin.tar.gz
+    dest: /opt/tools
+    owner: root
+    group: root
+    mode: 0777
   with_items:
     - "{{ maven_versions }}"
 
