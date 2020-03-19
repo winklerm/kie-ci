@@ -116,6 +116,13 @@
     state: link
     mode: 0644
 
+- name: Set permissions on Groovy dir
+  file:
+    path: /opt/tools/groovy-2.4.7
+    owner: root
+    group: root
+    mode: 0777
+
 ### Firefox ###
 
 - name: Download Firefox archives
