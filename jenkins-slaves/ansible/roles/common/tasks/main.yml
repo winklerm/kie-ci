@@ -96,14 +96,6 @@
   with_items:
    - "{{ jdk_short_versions }}"
 
-- name: Set permissions on JDK dirs
-  file:
-    path: /opt/tools/{{ item }}
-    state: directory
-    mode: 0777
-  with_items:
-    - "{{ jdk_long_versions }}"
-
 - name: Create JDK symlinks
   file:
     src: /opt/tools/{{ item.0 }}
@@ -113,6 +105,15 @@
   with_together:
   - "{{ jdk_long_versions }}"
   - "{{ jdk_symlink_names }}"
+
+- name: Set permissions on JDK dirs
+  file:
+    path: /opt/tools/{{ item }}
+    owner: root
+    group: root
+    mode: 0777
+  with_items:
+    - "{{ jdk_long_versions }}"
 
 ### Maven ###
 
@@ -133,7 +134,8 @@
 - name: Set permissions on Maven dirs
   file:
     path: /opt/tools/apache-maven-{{ item }}
-    state: directory
+    owner: root
+    group: root
     mode: 0777
   with_items:
     - "{{ maven_versions }}"
